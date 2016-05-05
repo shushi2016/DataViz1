@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8">
+<link rel="stylesheet" type="text/css" href="style.css">
+<title>A test chart</title>
+<script src = "https://d3js.org/d3.v3.min.js"></script>
+<script src = "http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+<h1>Data Visualization Project</h1>
+<h2>Historic Flights Data</h2>
+</head>
+<body>
+<div id = "chartContainer"></div>
+<script type="text/javascript">
+  "use strict";
+  var margin = 100;
+  var width = 1200 - margin;
+  var height = 700 - margin;
+  var svg = dimple.newSvg("#chartContainer", width,height);
+
+  d3.csv("YearlyMaxTotal.csv").row(function(d) {
+    return {
+      Count : +1,
+      Year : d.Year,
+      ArrDelay : d3.round(+d.ArrDelay,2),
+      DepDelay : d.DepDelay,
+      Carrier : d.UniqueCarrier
+    };
+    }).get(function(error, data) {
+    var myChart = new dimple.chart(svg, data);
+    //add legend
+    var myLegend = myChart.addLegend(120, 80, 150, 300, "left");
+    //define a color palette
+    myChart.defaultColors = [
+      new dimple.color("#3498db", "#2980b9", 1), // blue
+      new dimple.color("#e74c3c", "#c0392b", 1), // red
+      new dimple.color("#2ecc71", "#27ae60", 1), // green
+      new dimple.color("#9b59b6", "#8e44ad", 1), // purple
+      new dimple.color("#e67e22", "#d35400", 1), // orange
+      new dimple.color("#f1c40f", "#f39c12", 1), // yellow
+      new dimple.color("#1abc9c", "#16a085", 1), // turquoise
+      new dimple.color("#95a5a6", "#7f8c8d", 1)  // gray
+      ];
+    // change to time series plot
+    var x = myChart.addTimeAxis("x", "Year", "%Y", "%Y");
+    x.overrideMin = d3.time.format("%Y").parse("1986");
+    x.overrideMax = d3.time.format("%Y").parse("2009");
+    x.ticks = 5;
+    x.fontSize = "14px";
+    var y1 = myChart.addMeasureAxis("y", "ArrDelay");
+    y1.fontSize = "18px";
+    y1.overrideMax = 3000;
+    y1.tickFormat = "f";
+    y1.ticks = 5;
+    var dots = myChart.addSeries(["Index", "Carrier"], dimple.plot.scatter);
+    var lines = myChart.addSeries(["Index", "Carrier"], dimple.plot.line);
+    myChart.draw();
+    // orphan the legend
+    myChart.legends = [];
+    var filterValues = dimple.getUniqueValues(data, "Carrier");
+    myLegend.shapes.selectAll("rect")
+      .on("click", function (e) {
+        var hide = false;
+        var newFilters = [];
+        filterValues.forEach(function (f) {
+          if (f === e.aggField.slice(-1)[0]) {
+            hide = true;
+          } else {
+            newFilters.push(f);
+          }
+        });
+        if (hide) {
+          d3.select(this).style("opacity", 0.2);
+        } else {
+          newFilters.push(e.aggField.slice(-1)[0]);
+          d3.select(this).style("opacity", 0.8);
+        }
+        filterValues = newFilters;
+        myChart.data = dimple.filterData(data, "Carrier", filterValues);
+        myChart.draw(40);
+        y1.titleShape.text("Arrival Delay [minute]");
+        x.titleShape.text("");
+      });
+
+    //fine-tune the axises
+    y1.titleShape.text("Arrival Delay [minute]");
+    x.titleShape.text("");
+    svg.append("text")
+   	  .attr("x", myChart._xPixels() + myChart._widthPixels() / 2)
+   	  .attr("y", myChart._yPixels() - 30)
+   	  .style("text-anchor", "middle")
+   	  .style("font-family", "sans-serif")
+   	  .style("font-weight", "bold")
+   	  .text("Yearly Maximum Arrival-delay Time over Twenty Years");
+    
+	});
+</script>
+<div id = 'Text'><div>
+  <p>The legend area is clcikable. Try it!</p>
+</body>
