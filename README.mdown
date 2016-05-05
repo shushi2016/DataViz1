@@ -1,76 +1,10 @@
 # Summary
-This chart shows yearly-maximum of arrival-delay-time of 8 major carrier companies from 1987 to 2008. The legend is 'click-able' to let the readers focus on the data they would like to see.
+This chart shows yearly-maximum of arrival-delay-time of 8 major carrier companies from 1987 to 2008. The legend is clickable so please try it out.
 
 Over the twenty years period, the yearly-max of arrival-delay-time showed increasing trend, more or less, for all these carriers. The pattern of this increasing are different though: For example, the WN showed a gradual but steady increase, the US and DL started to increase around year 2000, while AA showed a step increase from 1987 to 1988 and then kept flat for the rest of the time. 
 
-This trend of increase is contrary to my intuition that the companies have reduced the delay time as technology developes. I came up with several possible reasons for this trend:
+# How I made this figue
+I downloaded the csv files of each year from [stat-computing.org](http://stat-computing.org/dataexpo/2009/the-data.html) and then used some R codes to find out the yearly-max of arrival delay from each carrier. Then I exported the new data set, which is much smaller now, to a csv file-YearlyMaxTotal.csv. I made this interactive chart with D3.js and used css code to fine tune some details of the html page. 
 
-1. The arrival-delay is closely correlated with departure delay (not shown by this figure), and the departure delay can be affected by many factors. For example, as the number of flight travellers increased, the departure delay became longer.
-
-2. As the number of longer distance flights increased, the maximum of arrival-delay also went up, because chances of things go wrong during the flight were enhenced.
-
-3. More extrem weather were appearing more frequently in recent years, which caused large value of max arrival delay.
-
-4. Because the carriers are sharing airports, so if an airport had some incident on a day, it could cause the max record of arrival delay for many carreirs.    
-
-# Design
-I used time-series scatter plot in order to show the trend of arrival-delay-time over twenty years. Becasue the message I am trying to convey is that "For these three carriers, the yearly-maximum of arrival-delay all showed an increasing-trend, from 1987 to 2008", the time-series plot is the best way to present this time trend.
-
-To distinguish different carriers, I used multiple series in this chart. Also I used lines to connect all the dots to guide readers' attention as they scan the figure from left to right.
-
-I defined several colors which are more saturated than the default colors, to make a better contrast and distinguish different carriers.
-
-Compared to 'index_v4.html', the 'index_v5.html' only contained three different carriers, which made it easier for the readers to see. I picked the three carriers with three different patterns.
-
-In 'index_v6.html' version, I added an interactive legend so that the readers can choose which carrier data they would like to focus on. This helps with making the 'busy' chart easier to understand. 
-
-
-# Feedback
-#### Reviewer 1
-1. The y-axis label is not self-explanatory.
-2. Font size too small
-3. X should be continuous instead of categorical.
-
-*Update to index_v2.html based on Reviewer 1's comments.*
-
-#### Reviewer 2
-1. The color should be used to differentiate carriers.
-2. The color palette of markers needs to be better defined.
-
-*Updated to index_v3.html based on Reviewer 2's comments.*
-
-#### Reviewer 3
-1. Adding a title can help people understand the chart better.
-2. Use larger font for the tooltips.
-3. Connect the dots would be better.
-
-*Updated to index_v4.html based on Reviewer 3's comments.*
-
-#### Udacity Coach Review Round 1
-1. Need to show a trend clearly in the figure
-
-*Updated to index_v5.html based on coach's comments*.
-
-#### Udacity Coach Review Round 2
-1. Need better exploratory data analysis
-
-*Updated to index_v6.html based on coach's comments*.
-
-
-# Resources
-
-Data are downloaded from [here](http://stat-computing.org/dataexpo/2009/the-data.html).
-
-[Udacity discussion forum](https://discussions.udacity.com/t/d3-csv-reads-in-integers-as-strings/165533) - speicial thanks to Coach Myles!
-
-[dimplejs.org example](http://dimplejs.org/examples_viewer.html?id=scatter_standard)
-
-
-[Custom Styling](http://dimplejs.org/advanced_examples_viewer.html?id=advanced_custom_styling)
-
-
-Udacity Coach Review [round #1](https://review.udacity.com/#!/reviews/139804) & [round #2](https://review.udacity.com/#!/reviews/140313)
-
-[Interactive Legend Example](http://dimplejs.org/advanced_examples_viewer.html?id=advanced_interactive_legends)
-
-
+# What to do next
+This  historic flight data set is huge and there are many other ways to explore the data. I bet there are some stories that are even more interesting to tell. That's what I will be working on next.
